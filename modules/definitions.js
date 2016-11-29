@@ -1,61 +1,84 @@
-function onText(tagName, text) {
-  if (self.control.grpHdr.importing) {
-    if (tagName === "CtrlSum")
-      self.control.grpHdr.ctrlSum = text;
-    if (tagName === "NbOfTxs")
-      self.control.grpHdr.nbOfTxs = text;
+function onText() {
+  var self = this;
+  return function (tagName, text) {
+    if (self.control.grpHdr.importing) {
+      if (tagName === "CtrlSum")
+        self.control.grpHdr.ctrlSum = text;
+      if (tagName === "NbOfTxs")
+        self.control.grpHdr.nbOfTxs = text;
+    }
   }
 }
 
-function onOpenTag(tag, obj) {
-  if (tag === "GrpHdr") {
-    self.control.grpHdr.importing = true;
-  }
-}
-
-exports.sct = {
-  "onText": onText,
-  "onOpenTag": onOpenTag,
-  "onCloseTag": function (tag, obj) {
+function onOpenTag() {
+  var self = this;
+  return function (tag, obj) {
     if (tag === "GrpHdr") {
-      self.control.grpHdr.importing = false;
+      self.control.grpHdr.importing = true;
     }
+  }
+}
 
-    if (tag === "CdtTrfTxInf") {
-      self.cdtTrfTxInf.push(obj.Document.CstmrCdtTrfInitn.PmtInf.CdtTrfTxInf);
-      delete obj.Document.CstmrCdtTrfInitn.PmtInf.CdtTrfTxInf;
-      if (obj.Document.CstmrCdtTrfInitn.PmtInf.CdtTrfTxInf)
-        throw "Chyba - CdtTrfTxInf";
-    }
+var sct = function () {
+  var self = this;
+  return {
+    events: {
+      "onText": onText.call(self),
+      "onOpenTag": onOpenTag.call(self),
+      "onCloseTag": function (tag, obj) {
+        if (tag === "GrpHdr") {
+          self.control.grpHdr.importing = false;
+        }
 
-    if (tag === "PmtInf") {
-      obj.Document.CstmrCdtTrfInitn.PmtInf.CdtTrfTxInf = self.cdtTrfTxInf;
+        if (tag === "CdtTrfTxInf") {
+          self.cdtTrfTxInf.push(obj.Document.CstmrCdtTrfInitn.PmtInf.CdtTrfTxInf);
+          delete obj.Document.CstmrCdtTrfInitn.PmtInf.CdtTrfTxInf;
+          if (obj.Document.CstmrCdtTrfInitn.PmtInf.CdtTrfTxInf)
+            throw "Chyba - CdtTrfTxInf";
+        }
 
-      obj.Document.CstmrCdtTrfInitn.PmtInf.CdtTrfTxInf.forEach(function (txn) {
-        self.control.pmtInf.cnt++;
-        self.control.pmtInf.sum = parseFloat((self.control.pmtInf.sum + parseFloat(txn.Amt.InstdAmt._)).toFixed(2));
-      });
+        if (tag === "PmtInf") {
+          obj.Document.CstmrCdtTrfInitn.PmtInf.CdtTrfTxInf = self.cdtTrfTxInf;
 
-      self.pmtInf.push(obj.Document.CstmrCdtTrfInitn.PmtInf);
-      self.cdtTrfTxInf = [];
-      delete obj.Document.CstmrCdtTrfInitn.PmtInf;
-      if (obj.Document.CstmrCdtTrfInitn.PmtInf)
-        throw "Chyba - PmtInf";
-    }
+          obj.Document.CstmrCdtTrfInitn.PmtInf.CdtTrfTxInf.forEach(function (txn) {
+            self.control.pmtInf.cnt++;
+            self.control.pmtInf.sum = parseFloat((self.control.pmtInf.sum + parseFloat(txn.Amt.InstdAmt._)).toFixed(2));
+          });
 
-    if (tag === "CstmrCdtTrfInitn") {
-      obj.Document.CstmrCdtTrfInitn.PmtInf = self.pmtInf;
+          self.pmtInf.push(obj.Document.CstmrCdtTrfInitn.PmtInf);
+          self.cdtTrfTxInf = [];
+          delete obj.Document.CstmrCdtTrfInitn.PmtInf;
+          if (obj.Document.CstmrCdtTrfInitn.PmtInf)
+            throw "Chyba - PmtInf";
+        }
 
-      if (!self.control.check())
-        throw "Expected control sum " + self.control.grpHdr.ctrlSum + "=" + self.control.pmtInf.sum + " or quantity of payments " + self.control.grpHdr.nbOfTxs + "=" + self.control.pmtInf.cnt;
-      self.control.reset();
+        if (tag === "CstmrCdtTrfInitn") {
+          obj.Document.CstmrCdtTrfInitn.PmtInf = self.pmtInf;
 
-      delete obj.Document.CstmrCdtTrfInitn;
-      if (obj.Document.CstmrCdtTrfInitn)
-        throw "Chyba - CstmrCdtTrfInitn";
+          if (!self.control.check())
+            throw "Expected control sum " + self.control.grpHdr.ctrlSum + "=" + self.control.pmtInf.sum + " or quantity of payments " + self.control.grpHdr.nbOfTxs + "=" + self.control.pmtInf.cnt;
+          self.control.reset();
+
+          delete obj.Document.CstmrCdtTrfInitn;
+          if (obj.Document.CstmrCdtTrfInitn)
+            throw "Chyba - CstmrCdtTrfInitn";
+        }
+      }
     }
   }
 };
+
+module.exports = function (instrument) {
+  switch (instrument) {
+    case "SCT":
+    {
+      return sct.call(this);
+    }
+    default:
+      throw new Error("Unknown instrument: " + instrument);
+  }
+};
+
 //
 // exports.sdd = {
 //   "onText": onText,

@@ -13,7 +13,7 @@ var addEvents = function () {
       self.events.onText(this.tagName, text);
   };
   this.parser.onopentag = function (tag) {
-    console.log(tag);
+  //  console.log(tag);
     if (self.events.onOpenTag)
       self.events.onOpenTag(tag.name, self.obj);
   };

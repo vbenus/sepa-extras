@@ -1,9 +1,9 @@
-var definitions = require('./definitions');
+var definitions = require('./definitions'),
+  coreParser = require('./coreParser');
 
 module.exports = function (instrument) {
   var ret = {
     cdtTrfTxInf: [],
-    drctDbtTxInf: [],
     pmtInf: [],
     control: {
       grpHdr: {
@@ -26,24 +26,17 @@ module.exports = function (instrument) {
           && (typeof this.grpHdr.ctrlSum === "undefined" || parseFloat(this.grpHdr.ctrlSum) === this.pmtInf.sum)
       }
     },
-    parser: saxParser(),
+    parser: coreParser(),
     write: function (data) {
-      var self = this, deferred = $q.defer();
-      this.pmtInf = [];
-      $timeout(function () {
-        try {
-          self.parser.write(data);
-          deferred.resolve(self.pmtInf);
-        } catch (e) {
-          deferred.reject(e);
-        }
-      });
-      return deferred.promise;
+      this.parser.write(data);
     },
     end: function () {
       this.parser.end();
     }
   };
-  ret.parser.eventsCbs(events.call(ret, instrument));
+
+  var def  = definitions.call(ret, instrument);
+
+  ret.parser.eventsCbs(def.events);
   return ret;
 };
