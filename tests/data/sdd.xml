@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<Document xmlns="urn:iso:std:iso:20022:tech:xsd:pain.008.001.02" xmlns:NS1="http://www.w3.org/2001/XMLSchema-instance">
+    <CstmrDrctDbtInitn>
+
+        <GrpHdr>
+            <MsgId>BBM_20131204_2_abcdefgh_457BD</MsgId>
+            <CreDtTm>2013-12-04T09:09:24</CreDtTm>
+            <NbOfTxs>1</NbOfTxs>
+            <CtrlSum>111</CtrlSum>
+            <InitgPty>
+                <Nm>BB</Nm>
+            </InitgPty>
+        </GrpHdr>
+
+        <PmtInf>
+            <PmtInfId>6HVYMAHOTMDCPOJKX0HMTFF4A</PmtInfId>
+            <PmtMtd>DD</PmtMtd>
+            <PmtTpInf>
+                <SvcLvl>
+                    <Cd>SEPA</Cd>
+                </SvcLvl>
+                <LclInstrm>
+                    <Cd>CORE</Cd>
+                </LclInstrm>
+                <SeqTp>RCUR</SeqTp>
+            </PmtTpInf>
+            <ReqdColltnDt>2016-11-23</ReqdColltnDt>
+            <Cdtr>
+                <Nm>NOT PROVIDED</Nm>
+            </Cdtr>
+            <CdtrAcct>
+                <Id>
+                    <IBAN>SK9502000000001149266653</IBAN>
+                </Id>
+            </CdtrAcct>
+            <CdtrAgt>
+                <FinInstnId>
+                    <BIC>SUBASKBX</BIC>
+                </FinInstnId>
+            </CdtrAgt>
+            <UltmtCdtr>
+                <Nm>ult creditor</Nm>
+                <PstlAdr>
+                    <Ctry>AI</Ctry>
+                    <AdrLine>address 1</AdrLine>
+                    <AdrLine>address 2</AdrLine>
+                </PstlAdr>
+                <Id>
+                    <OrgId>
+                        <Othr>
+                            <Id>organization</Id>
+                        </Othr>
+                    </OrgId>
+                </Id>
+            </UltmtCdtr>
+            <ChrgBr>SLEV</ChrgBr>
+            <DrctDbtTxInf>
+                <PmtId>
+                    <EndToEndId>12121212</EndToEndId>
+                </PmtId>
+                <InstdAmt Ccy="EUR">111</InstdAmt>
+                <DrctDbtTx>
+                    <MndtRltdInf>
+                        <MndtId>mandate</MndtId>
+                        <DtOfSgntr>2016-11-01</DtOfSgntr>
+                    </MndtRltdInf>
+                </DrctDbtTx>
+                <DbtrAgt>
+                    <FinInstnId>
+                        <BIC>SUBASKBX</BIC>
+                    </FinInstnId>
+                </DbtrAgt>
+                <Dbtr>
+                    <Nm>partner19</Nm>
+                    <PstlAdr>
+                        <Ctry>CR</Ctry>
+                        <AdrLine>partner19 adresa</AdrLine>
+                        <AdrLine>partner19 adresa2</AdrLine>
+                    </PstlAdr>
+                </Dbtr>
+                <DbtrAcct>
+                    <Id>
+                        <IBAN>SK9302000000000000000019</IBAN>
+                    </Id>
+                </DbtrAcct>
+                <UltmtDbtr>
+                    <Nm>ult debtor</Nm>
+                    <PstlAdr>
+                        <Ctry>GG</Ctry>
+                        <AdrLine>address 1</AdrLine>
+                        <AdrLine>address 2</AdrLine>
+                    </PstlAdr>
+                    <Id>
+                        <PrvtId>
+                            <Othr>
+                                <Id>individual</Id>
+                            </Othr>
+                        </PrvtId>
+                    </Id>
+                </UltmtDbtr>
+                <RmtInf>
+                    <Ustrd>additional data</Ustrd>
+                </RmtInf>
+            </DrctDbtTxInf>
+
+        </PmtInf>
+
+
+    </CstmrDrctDbtInitn>
+</Document>
+

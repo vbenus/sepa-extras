@@ -51,7 +51,7 @@ module.exports = function (events) {
     events: {
       onCloseTag: events && events.onCloseTag || undefined,
       onOpenTag: events && events.onOpenTag || undefined,
-      onText: events && events.onText || undefined,
+      onText: events && events.onText || undefined
     },
     parser: sax.parser(true, {normalize: true, trim: true}),
     write: function (data) {

@@ -11,11 +11,15 @@ var expect = require('chai').expect,
 // });
 
 var file = fs.readFileSync('./data/sct.xml', 'utf8');
+var sct = xml2json("SCT");
+sct.write(file)
+  .then((data)=> {
+    console.log(data);
+  });
 
-//var c = core();
-
-//console.log(c.write(file));
-
-var x2j = xml2json("SCT");
-
-console.log(x2j.write(file));
+file = fs.readFileSync('./data/sdd.xml', 'utf8');
+var sdd = xml2json("SDD");
+sdd.write(file)
+  .then((data)=> {
+    console.log(data);
+  });
