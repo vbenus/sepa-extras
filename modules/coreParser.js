@@ -13,7 +13,6 @@ var addEvents = function () {
       self.events.onText(this.tagName, text);
   };
   this.parser.onopentag = function (tag) {
-  //  console.log(tag);
     if (self.events.onOpenTag)
       self.events.onOpenTag(tag.name, self.obj);
   };
@@ -45,14 +44,14 @@ var addEvents = function () {
   };
 };
 
-module.exports = function () {
+module.exports = function (events) {
   var obj = {
     attrs: [],
     obj: {},
     events: {
-      onCloseTag: undefined,
-      onOpenTag: undefined,
-      onText: undefined
+      onCloseTag: events && events.onCloseTag || undefined,
+      onOpenTag: events && events.onOpenTag || undefined,
+      onText: events && events.onText || undefined,
     },
     parser: sax.parser(true, {normalize: true, trim: true}),
     write: function (data) {
@@ -93,11 +92,6 @@ module.exports = function () {
     },
     end: function () {
       this.parser.end();
-    },
-    eventsCbs: function (cbs) {
-      this.events.onCloseTag = cbs.onCloseTag;
-      this.events.onOpenTag = cbs.onOpenTag;
-      this.events.onText = cbs.onText;
     }
   };
 

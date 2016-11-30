@@ -3,16 +3,16 @@ var expect = require('chai').expect,
   fs = require('fs'),
   xml2json = require('./../modules/xml2json');
 
-describe('core', function() {
-  it('init', function(){
-    var c = core();
-    expect(c).to.be.defined;
-  })
-});
+// describe('core', function() {
+//   it('init', function(){
+//     var c = core();
+//     expect(c).to.be.defined;
+//   })
+// });
 
 var file = fs.readFileSync('./data/sct.xml', 'utf8');
 
-var c = core();
+//var c = core();
 
 //console.log(c.write(file));
 

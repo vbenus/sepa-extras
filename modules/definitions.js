@@ -1,70 +1,90 @@
-function onText() {
-  var self = this;
-  return function (tagName, text) {
-    if (self.control.grpHdr.importing) {
-      if (tagName === "CtrlSum")
-        self.control.grpHdr.ctrlSum = text;
-      if (tagName === "NbOfTxs")
-        self.control.grpHdr.nbOfTxs = text;
+var control = function () {
+  return {
+    grpHdr: {
+      importing: false,
+      nbOfTxs: undefined,
+      ctrlSum: undefined
+    },
+    pmtInf: {
+      cnt: 0,
+      sum: 0
+    },
+    reset: function () {
+      this.grpHdr.ctrlSum = undefined;
+      this.grpHdr.nbOfTxs = undefined;
+      this.pmtInf.cnt = 0;
+      this.pmtInf.sum = 0;
+    },
+    check: function () {
+      return (typeof this.grpHdr.nbOfTxs === "undefined" || parseInt(this.grpHdr.nbOfTxs) === this.pmtInf.cnt)
+        && (typeof this.grpHdr.ctrlSum === "undefined" || parseFloat(this.grpHdr.ctrlSum) === this.pmtInf.sum)
     }
   }
-}
-
-function onOpenTag() {
-  var self = this;
-  return function (tag, obj) {
-    if (tag === "GrpHdr") {
-      self.control.grpHdr.importing = true;
-    }
-  }
-}
+};
 
 var sct = function () {
-  var self = this;
   return {
-    events: {
-      "onText": onText.call(self),
-      "onOpenTag": onOpenTag.call(self),
-      "onCloseTag": function (tag, obj) {
-        if (tag === "GrpHdr") {
-          self.control.grpHdr.importing = false;
-        }
+    get events() {
+      var self = this;
+      return {
+        "onText": function (tagName, text) {
+          if (self.control.grpHdr.importing) {
+            if (tagName === "CtrlSum")
+              self.control.grpHdr.ctrlSum = text;
+            if (tagName === "NbOfTxs")
+              self.control.grpHdr.nbOfTxs = text;
+          }
+        },
+        "onOpenTag": function (tag, obj) {
+          console.log(tag);
+          if (tag === "GrpHdr") {
+            self.control.grpHdr.importing = true;
+          }
+        },
+        "onCloseTag": function (tag, obj) {
+          if (tag === "GrpHdr") {
+            self.control.grpHdr.importing = false;
+          }
 
-        if (tag === "CdtTrfTxInf") {
-          self.cdtTrfTxInf.push(obj.Document.CstmrCdtTrfInitn.PmtInf.CdtTrfTxInf);
-          delete obj.Document.CstmrCdtTrfInitn.PmtInf.CdtTrfTxInf;
-          if (obj.Document.CstmrCdtTrfInitn.PmtInf.CdtTrfTxInf)
-            throw "Chyba - CdtTrfTxInf";
-        }
+          if (tag === "CdtTrfTxInf") {
+            self.cdtTrfTxInf.push(obj.Document.CstmrCdtTrfInitn.PmtInf.CdtTrfTxInf);
+            delete obj.Document.CstmrCdtTrfInitn.PmtInf.CdtTrfTxInf;
+            if (obj.Document.CstmrCdtTrfInitn.PmtInf.CdtTrfTxInf)
+              throw "Chyba - CdtTrfTxInf";
+          }
 
-        if (tag === "PmtInf") {
-          obj.Document.CstmrCdtTrfInitn.PmtInf.CdtTrfTxInf = self.cdtTrfTxInf;
+          if (tag === "PmtInf") {
+            obj.Document.CstmrCdtTrfInitn.PmtInf.CdtTrfTxInf = self.cdtTrfTxInf;
 
-          obj.Document.CstmrCdtTrfInitn.PmtInf.CdtTrfTxInf.forEach(function (txn) {
-            self.control.pmtInf.cnt++;
-            self.control.pmtInf.sum = parseFloat((self.control.pmtInf.sum + parseFloat(txn.Amt.InstdAmt._)).toFixed(2));
-          });
+            obj.Document.CstmrCdtTrfInitn.PmtInf.CdtTrfTxInf.forEach(function (txn) {
+              self.control.pmtInf.cnt++;
+              self.control.pmtInf.sum = parseFloat((self.control.pmtInf.sum + parseFloat(txn.Amt.InstdAmt._)).toFixed(2));
+            });
 
-          self.pmtInf.push(obj.Document.CstmrCdtTrfInitn.PmtInf);
-          self.cdtTrfTxInf = [];
-          delete obj.Document.CstmrCdtTrfInitn.PmtInf;
-          if (obj.Document.CstmrCdtTrfInitn.PmtInf)
-            throw "Chyba - PmtInf";
-        }
+            self.pmtInf.push(obj.Document.CstmrCdtTrfInitn.PmtInf);
+            self.cdtTrfTxInf = [];
+            delete obj.Document.CstmrCdtTrfInitn.PmtInf;
+            if (obj.Document.CstmrCdtTrfInitn.PmtInf)
+              throw "Chyba - PmtInf";
+          }
 
-        if (tag === "CstmrCdtTrfInitn") {
-          obj.Document.CstmrCdtTrfInitn.PmtInf = self.pmtInf;
+          if (tag === "CstmrCdtTrfInitn") {
+            obj.Document.CstmrCdtTrfInitn.PmtInf = self.pmtInf;
 
-          if (!self.control.check())
-            throw "Expected control sum " + self.control.grpHdr.ctrlSum + "=" + self.control.pmtInf.sum + " or quantity of payments " + self.control.grpHdr.nbOfTxs + "=" + self.control.pmtInf.cnt;
-          self.control.reset();
+            if (!self.control.check())
+              throw "Expected control sum " + self.control.grpHdr.ctrlSum + "=" + self.control.pmtInf.sum + " or quantity of payments " + self.control.grpHdr.nbOfTxs + "=" + self.control.pmtInf.cnt;
+            self.control.reset();
 
-          delete obj.Document.CstmrCdtTrfInitn;
-          if (obj.Document.CstmrCdtTrfInitn)
-            throw "Chyba - CstmrCdtTrfInitn";
-        }
+            delete obj.Document.CstmrCdtTrfInitn;
+            if (obj.Document.CstmrCdtTrfInitn)
+              throw "Chyba - CstmrCdtTrfInitn";
+          }
+        },
       }
-    }
+    },
+    cdtTrfTxInf: [],
+    pmtInf: [],
+    control: control()
   }
 };
 
@@ -72,7 +92,7 @@ module.exports = function (instrument) {
   switch (instrument) {
     case "SCT":
     {
-      return sct.call(this);
+      return sct();
     }
     default:
       throw new Error("Unknown instrument: " + instrument);
