@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<Document xmlns="urn:iso:std:iso:20022:tech:xsd:pain.001.001.03" xmlns:NS1="http://www.w3.org/2001/XMLSchema-instance">
+    <CstmrCdtTrfInitn>
+        <GrpHdr>
+            <MsgId>MCCT13101142131171679</MsgId>
+            <CreDtTm>2013-10-11T01:35:18</CreDtTm>
+            <NbOfTxs>2</NbOfTxs>
+            <CtrlSum>3.44</CtrlSum>
+            <InitgPty>
+                <Nm>Kofola a.s. (SK)</Nm>
+                <PstlAdr>
+                    <Ctry>SK</Ctry>
+                    <AdrLine>ADR LINE 01 XXXXXX</AdrLine>
+                    <AdrLine>ADR LINE 02 XXXXXX</AdrLine>
+                </PstlAdr>
+                <Id>
+                    <OrgId>
+                        <Othr>
+                            <Id>0468651441</Id>
+                        </Othr>
+                    </OrgId>
+                </Id>
+            </InitgPty>
+        </GrpHdr>
+        <PmtInf>
+            <PmtInfId>13101100004</PmtInfId>
+            <PmtMtd>TRF</PmtMtd>
+            <BtchBookg>true</BtchBookg>
+            <NbOfTxs>2</NbOfTxs>
+            <CtrlSum>3.44</CtrlSum>
+            <PmtTpInf>
+                <SvcLvl>
+                    <Cd>SEPA</Cd>
+                </SvcLvl>
+            </PmtTpInf>
+            <ReqdExctnDt>2013-11-03</ReqdExctnDt>
+            <Dbtr>
+                <Nm>ULTIMATE DEBTOR NAME 003</Nm>
+                <PstlAdr>
+                    <Ctry>SK</Ctry>
+                    <AdrLine>ADR LINE 01 XXXXXX</AdrLine>
+                    <AdrLine>ADR LINE 02 XXXXXX</AdrLine>
+                </PstlAdr>
+            </Dbtr>
+            <DbtrAcct>
+                <Id>
+                    <IBAN>SK2102000000001137460854</IBAN>
+                </Id>
+            </DbtrAcct>
+            <DbtrAgt>
+                <FinInstnId>
+                    <BIC>SUBASKBX</BIC>
+                </FinInstnId>
+            </DbtrAgt>
+            <UltmtDbtr>
+                <Nm>PO AUTO EXTERIORS S.R.O.</Nm>
+                <PstlAdr>
+                    <Ctry>SK</Ctry>
+                    <AdrLine>Ulica</AdrLine>
+                    <AdrLine>BRATISLAVA</AdrLine>
+                </PstlAdr>
+                <Id>
+                    <PrvtId>
+                        <Othr>
+                            <Id>individual_id</Id>
+                        </Othr>
+                    </PrvtId>
+                </Id>
+            </UltmtDbtr>
+            <ChrgBr>SLEV</ChrgBr>
+            <CdtTrfTxInf>
+                <PmtId>
+                    <InstrId>MCCT131011000002</InstrId>
+                    <EndToEndId>E2EC131011000002</EndToEndId>
+                </PmtId>
+                <Amt>
+                    <InstdAmt Ccy="EUR">2.34</InstdAmt>
+                </Amt>
+                <CdtrAgt>
+                    <FinInstnId>
+                        <BIC>INGBSKBXDDD</BIC>
+                    </FinInstnId>
+                </CdtrAgt>
+                <Cdtr>
+                    <Nm>Prijemca</Nm>
+                    <PstlAdr>
+                        <Ctry>SK</Ctry>
+                        <AdrLine>UL PPRIJ</AdrLine>
+                        <AdrLine>MESTO PRIJ</AdrLine>
+                    </PstlAdr>
+                </Cdtr>
+                <CdtrAcct>
+                    <Id>
+                        <IBAN>SK7873000000000000125890</IBAN>
+                    </Id>
+                </CdtrAcct>
+                <UltmtCdtr>
+                    <Nm>AAAA 1</Nm>
+                    <PstlAdr>
+                        <Ctry>SK</Ctry>
+                        <AdrLine>KON UL 1</AdrLine>
+                        <AdrLine>KON MES 1</AdrLine>
+                    </PstlAdr>
+                    <Id>
+                        <OrgId>
+                            <Othr>
+                                <Id>organization_id</Id>
+                            </Othr>
+                        </OrgId>
+                    </Id>
+                </UltmtCdtr>
+                <RmtInf>
+                    <Ustrd>additional data
+                    </Ustrd>
+                </RmtInf>
+            </CdtTrfTxInf>
+            <CdtTrfTxInf>
+                <PmtId>
+                    <InstrId>MCCT131011000002</InstrId>
+                    <EndToEndId>E2EC131011000002</EndToEndId>
+                </PmtId>
+                <Amt>
+                    <InstdAmt Ccy="EUR">1.1</InstdAmt>
+                </Amt>
+                <CdtrAgt>
+                    <FinInstnId>
+                        <BIC>INGBSKBXDDD</BIC>
+                    </FinInstnId>
+                </CdtrAgt>
+                <Cdtr>
+                    <Nm>Prijemca</Nm>
+                    <PstlAdr>
+                        <Ctry>SK</Ctry>
+                        <AdrLine>UL PPRIJ</AdrLine>
+                        <AdrLine>MESTO PRIJ</AdrLine>
+                    </PstlAdr>
+                </Cdtr>
+                <CdtrAcct>
+                    <Id>
+                        <IBAN>SK7873000000000000125890</IBAN>
+                    </Id>
+                </CdtrAcct>
+                <UltmtCdtr>
+                    <Nm>AAAA 1</Nm>
+                    <PstlAdr>
+                        <Ctry>SK</Ctry>
+                        <AdrLine>KON UL 1</AdrLine>
+                        <AdrLine>KON MES 1</AdrLine>
+                    </PstlAdr>
+                    <Id>
+                        <OrgId>
+                            <Othr>
+                                <Id>organization_id</Id>
+                            </Othr>
+                        </OrgId>
+                    </Id>
+                </UltmtCdtr>
+                <RmtInf>
+                    <Ustrd>additional data
+                    </Ustrd>
+                </RmtInf>
+            </CdtTrfTxInf>
+        </PmtInf>
+    </CstmrCdtTrfInitn>
+
+</Document>
+

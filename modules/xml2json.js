@@ -4,14 +4,14 @@ var definitions = require('./definitions'),
 
 module.exports = function (instrument) {
   var instr = definitions(instrument);
-  var ret = {
+  return {
     write: function (data) {
       var deferred = q.defer(), self = this;
-      setTimeout(function(){
+      setTimeout(function () {
         try {
           self.parser.write(data);
           deferred.resolve(instr.data())
-        }catch(error){
+        } catch (error) {
           deferred.reject(error);
         }
       });
@@ -19,9 +19,7 @@ module.exports = function (instrument) {
     },
     end: function () {
       this.parser.end();
-    }
+    },
+    parser: coreParser(instr.events)
   };
-  
-  ret.parser = coreParser(instr.events);
-  return ret;
 };
